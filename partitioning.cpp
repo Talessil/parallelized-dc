@@ -8,6 +8,9 @@
 
 using namespace std;
 
+int name[4] = {0,0,0,0};
+
+
 
                     ///  GRAPH FUNCTIONS  ////
 
@@ -339,6 +342,15 @@ void initializes_list(int *v, int qnt){
     for(int i = 0; i < qnt; i++) v[i] = 0;
 }
 
+int get_name(){
+    int i = 0;
+    while(name[i]!=0){
+        i++;
+    }
+    name[i] = 1;
+    return i;
+}
+
 /* cut between nodes 'high_degree' and it's 'sub_tree' */
 /* invoke partitioning function again, if ite > 1 */
 /* flag = 1 (cut 1 sub-tree) ; flag = 2 (cut more than 1 sub-tree) */
@@ -417,8 +429,38 @@ void cut(Node *g, int high_degree_index, int * vet, int big, int upper_lim, int 
         /// parallelism
 
                 // set new boundaries and invoke 'partitioning' again
-        //#pragma omp task
+        #pragma omp task
         {
+            if(ite == numPart){
+                    // generate file name
+                int name = get_name();
+                char buffer1[320];
+                snprintf(buffer1, sizeof(char) * 320, "/home/tales/.config/Neo4j Desktop/Application/neo4jDatabases/database-e440885a-6ff3-4faf-a128-ae3606036f1b/installation-3.5.14/import/file%i.csv", name);
+                char buffer2[20];
+                snprintf(buffer2, sizeof(char) * 20, "file%i.csv", name);
+
+                ifstream myfile (arq);
+                ofstream myfile1 (buffer1);
+                ofstream myfile2 (buffer2);
+                int a, b;
+                float w;
+                if (myfile.is_open())
+                {
+                  myfile1 << "author_id1" << "," << "author_id2" << "," << "count";
+                  myfile2 << "author_id1" << "," << "author_id2" << "," << "count";
+                  while ( myfile >> a >> b >> w)
+                  {
+                      if ( graph1[a].value == 1 && graph1[b].value == 1){
+                        myfile1 << "\n" << a << "," << b << "," << w;
+                        myfile2 << "\n" << a << "," << b << "," << w;
+                    }
+                  }
+                  myfile.close();
+                  myfile1.close();
+                  myfile2.close();
+                }
+            }
+
             int k = 0;
             for(int i = 0; i < big; i++){
                 if(graph1[i].value == 1) k++;
@@ -427,11 +469,40 @@ void cut(Node *g, int high_degree_index, int * vet, int big, int upper_lim, int 
             low_lim = (k/2.0) - (k/20.0);
 
             partitioning(graph1,big,upper_lim,low_lim,arq,ite,numPart);
-
         }
 
-        //#pragma omp task
+        #pragma omp task
         {
+            if(ite == numPart){
+                    // generate file name
+                int name = get_name();
+                char buffer3[320];
+                snprintf(buffer3, sizeof(char) * 320, "/home/tales/.config/Neo4j Desktop/Application/neo4jDatabases/database-e440885a-6ff3-4faf-a128-ae3606036f1b/installation-3.5.14/import/file%i.csv", name);
+                char buffer4[20];
+                snprintf(buffer4, sizeof(char) * 20, "file%i.csv", name);
+
+                ifstream myfile (arq);
+                ofstream myfile3 (buffer3);
+                ofstream myfile4 (buffer4);
+                int a, b;
+                float w;
+                if (myfile.is_open())
+                {
+                  myfile3 << "author_id1" << "," << "author_id2" << "," << "count";
+                  myfile4 << "author_id1" << "," << "author_id2" << "," << "count";
+                  while ( myfile >> a >> b >> w)
+                  {
+                      if ( graph2[a].value == 1 && graph2[b].value == 1){
+                        myfile3 << "\n" << a << "," << b << "," << w ;
+                        myfile4 << "\n" << a << "," << b << "," << w ;
+                    }
+                  }
+                  myfile.close();
+                  myfile3.close();
+                  myfile4.close();
+                }
+            }
+
             int k = 0;
             for(int i = 0; i < big; i ++){
                 if(graph2[i].value == 1) k++;
@@ -439,9 +510,7 @@ void cut(Node *g, int high_degree_index, int * vet, int big, int upper_lim, int 
 
             upper_lim = (k/2.0) + (k/20.0);
             low_lim = (k/2.0) - (k/20.0);
-
             partitioning(graph2,big,upper_lim,low_lim,arq,ite,numPart);
-
         }
     }
 }
