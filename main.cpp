@@ -62,11 +62,11 @@ int main(int argc, char** argv)
     int upper_lim = (bigger_comp/2.0) + (bigger_comp/20.0);
     int low_lim = (bigger_comp/2.0) - (bigger_comp/20.0);
 
-    //omp_set_dynamic(0);
-    //omp_set_num_threads(4);
-    //#pragma omp parallel
+    omp_set_dynamic(0);
+    omp_set_num_threads(4);
+    #pragma omp parallel
     {
-        //#pragma omp single
+        #pragma omp single
         partitioning(graph, big, upper_lim, low_lim, arq, 1, arg);
     }
 
