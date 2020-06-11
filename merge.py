@@ -1,6 +1,7 @@
 from neo4j import GraphDatabase
 import pandas as pd
 import csv
+import subprocess
 graphdb = GraphDatabase.driver(uri="bolt://localhost:7687",auth=("neo4j", "1234"))
 
 
@@ -101,9 +102,10 @@ class Graph:
 
 if __name__ == "__main__":
 
-	
-		# SAVE GRAPH INTO A ADJACENCY LIST
+	subprocess.call(["./temp", "4"])
 
+		# SAVE GRAPH INTO A ADJACENCY LIST
+	
 	dados =  pd.read_csv('graph.csv', sep=",", header=0)
 	array = dados.values
 	V = 22 #1306563 dblp (sempre o maior id + 1)
@@ -170,7 +172,6 @@ if __name__ == "__main__":
 		session.close()
 	
 	
-
 	
 		# ORIGINAL FILE
 	"""
