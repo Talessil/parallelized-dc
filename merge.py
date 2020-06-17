@@ -2,6 +2,7 @@ from neo4j import GraphDatabase
 import pandas as pd
 import csv
 import subprocess
+import time
 graphdb = GraphDatabase.driver(uri="bolt://localhost:7687",auth=("neo4j", "1234"))
 
 
@@ -102,79 +103,84 @@ class Graph:
 
 if __name__ == "__main__":
 
-	subprocess.call(["./temp", "4"])
+    start_time = time.time()
+
+        # CALL C PROGRAM: PARTITIONING
+    subprocess.call(["./temp", "4"])
 
 		# SAVE GRAPH INTO A ADJACENCY LIST
-	
-	dados =  pd.read_csv('graph.csv', sep=",", header=0)
-	array = dados.values
-	V = 22 #1306563 dblp (sempre o maior id + 1)
-	graph = Graph(V)
-	k = 0
-	for n in array:
-		graph.add_edge(int(array[k][0]),int(array[k][1]),float(array[k][2]))
-		k = k + 1
+
+    dados =  pd.read_csv('graph.csv', sep=",", header=0)
+    array = dados.values
+    V = 22 #1306563 dblp (sempre o maior id + 1)
+    graph = Graph(V)
+    k = 0
+    for n in array:
+        graph.add_edge(int(array[k][0]),int(array[k][1]),float(array[k][2]))
+        k = k + 1
 
 		# AUX ARRAY (set the nodes inserted into the graph)
 
-	aux = V * [None]
-	for k in range(V):
-		aux[k] = 0
+    aux = V * [None]
+    for k in range(V):
+        aux[k] = 0
 
 		#LOAD FILES
 	
-	i = ['file0.csv', 'file1.csv', 'file2.csv', 'file3.csv']
-	ii = ['file:/file0.csv', 'file:/file1.csv', 'file:/file2.csv', 'file:/file3.csv']
+    i = ['file0.csv', 'file1.csv', 'file2.csv', 'file3.csv']
+    ii = ['file:/file0.csv', 'file:/file1.csv', 'file:/file2.csv', 'file:/file3.csv']
 
 		#FIRST FILE: SAVE IN AUX THE VALUES
 
-	dados =  pd.read_csv(i[0], sep=",", header=0)
-	array = dados.values
-	k = 0
-	for n in array:
-		a = int(array[k][0])
-		b = int(array[k][1])
-		aux[a] = 1
-		aux[b] = 1
-		k = k + 1
+    dados =  pd.read_csv(i[0], sep=",", header=0)
+    array = dados.values
+    k = 0
+    for n in array:
+    	a = int(array[k][0])
+    	b = int(array[k][1])
+    	aux[a] = 1
+    	aux[b] = 1
+    	k = k + 1
 	
 	
 	
 		#FIRST FILE
 	
-	session = graphdb.session() 	
-	session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id1)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id1)", url = ii[0])
-	session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id2)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id2)", url = ii[0])
-	session.run("Load csv with headers from $url as csvline MATCH (a:Pessoa {idpessoa: toInteger(csvline.author_id1)}),(b:Pessoa {idpessoa: toInteger(csvline.author_id2)}) create (a)-[r:Publicou{total:toFloat(csvline.count)}]->(b)", url = ii[0])
-	session.close()
+    session = graphdb.session() 	
+    session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id1)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id1)", url = ii[0])
+    session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id2)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id2)", url = ii[0])
+    session.run("Load csv with headers from $url as csvline MATCH (a:Pessoa {idpessoa: toInteger(csvline.author_id1)}),(b:Pessoa {idpessoa: toInteger(csvline.author_id2)}) create (a)-[r:Publicou{total:toFloat(csvline.count)}]->(b)", url = ii[0])
+    session.close()
 	
-	session = graphdb.session()
-	session.run("CALL netscan.find_communities('Pessoa','Publicou','idpessoa','total', 0.5, 5, 1)") #epsilon, minPnt, raio (protein: 0.5,5,1)
-	session.close()
+    session = graphdb.session()
+    session.run("CALL netscan.find_communities('Pessoa','Publicou','idpessoa','total', 0.5, 5, 1)") #epsilon, minPnt, raio (protein: 0.5,5,1)
+    session.close()
 	
 
 		#OTHER FILES
-	for ite in range(1,len(ii)):
-		session = graphdb.session() 
-		session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id1)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id1)", url = ii[ite])
-		session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id2)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id2)", url = ii[ite])
-		session.run("Load csv with headers from $url as csvline MATCH (a:Pessoa {idpessoa: toInteger(csvline.author_id1)}),(b:Pessoa {idpessoa: toInteger(csvline.author_id2)}) create (a)-[r:Publicou{total:toFloat(csvline.count)}]->(b)", url = ii[ite])
-		session.close()
+    for ite in range(1,len(ii)):
+    	session = graphdb.session() 
+    	session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id1)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id1)", url = ii[ite])
+    	session.run("Load csv with headers from $url as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id2)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id2)", url = ii[ite])
+    	session.run("Load csv with headers from $url as csvline MATCH (a:Pessoa {idpessoa: toInteger(csvline.author_id1)}),(b:Pessoa {idpessoa: toInteger(csvline.author_id2)}) create (a)-[r:Publicou{total:toFloat(csvline.count)}]->(b)", url = ii[ite])
+    	session.close()
 		
-		session = graphdb.session()
-		session.run("CALL netscan.find_communities('Pessoa','Publicou','idpessoa','total', 0.5, 5, 1)")
-		session.close()
+    	session = graphdb.session()
+    	session.run("CALL netscan.find_communities('Pessoa','Publicou','idpessoa','total', 0.5, 5, 1)")
+    	session.close()
 
-		graph.merge(i,ite,aux) 
+    	graph.merge(i,ite,aux) 
 		
-		session = graphdb.session()
-		session.run("CALL netscan.find_communities('Pessoa','Publicou','idpessoa','total', 0.5, 5, 1)")
-		session.close()
+    	session = graphdb.session()
+    	session.run("CALL netscan.find_communities('Pessoa','Publicou','idpessoa','total', 0.5, 5, 1)")
+    	session.close()
 	
-	
+    
+
+    print("--- %s seconds ---" % (time.time() - start_time))
 	
 		# ORIGINAL FILE
-	"""
+    """
 	session = graphdb.session() 
 	session.run("Load csv with headers from 'file:/graph.csv' as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id1)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id1)")
 	session.run("Load csv with headers from 'file:/graph.csv' as csvline MERGE (u:Pessoa {idpessoa: toInteger(csvline.author_id2)})  ON CREATE SET u.idpessoa = toInteger(csvline.author_id2)")

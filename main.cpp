@@ -22,7 +22,7 @@ int main(int argc, char** argv)
     long arg = strtol(argv[1], NULL, 10);
     //long arg = 4;
     // starts time couting
-    double start_time = omp_get_wtime();
+    //double start_time = omp_get_wtime();
     // original graph file
     const char* arq = "graph.txt";
     // mst file
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     create_graph(arq2, graph, big, 0);
             // retrive only the biggest component and it's size
     int bigger_comp = UGRAPHcc(graph, big);
-    printf("bigger comp: %d", bigger_comp);
+    //printf("bigger comp: %d", bigger_comp);
 
             ///  4 - parallelism zone  ///
 
@@ -74,8 +74,8 @@ int main(int argc, char** argv)
 
 
             /// 5 - print execution time
-    double time = omp_get_wtime() - start_time;
-    printf("\n\nTIME: %lf", time);
+    //double time = omp_get_wtime() - start_time;
+    //printf("\n\nTIME: %lf", time);
 
     remove("mst.txt");
     return 0;
