@@ -35,6 +35,7 @@ struct subset{
 
 /// /// /// /// /// /// /// /// /// /// /// ///
 
+
         ///  GRAPH FUNCTIONS  ////
 void free_graph(Node *graph, int big);
 int find_biggest_value(const char *arq);
@@ -57,6 +58,7 @@ void dfsRcc(Node *g, int *cc, int i, int comp);
 void initializes_list(int *v, int qnt);
 int dfs_count(Node *g, int sub_tree, int *v);
 int search_high_degree(Node *g, int big);
+int get_name();
 void cut(Node *g, int high_degree, int *vet, int big, const char * arq, int flag, int numPart);
 void partitioning(Node *g, int big, int upper_lim, int low_lim, const char * arq, int ite, int numPart);
 

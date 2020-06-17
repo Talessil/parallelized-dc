@@ -20,10 +20,11 @@ int main(int argc, char** argv)
 {
     // get 'int' input value
     long arg = strtol(argv[1], NULL, 10);
+    //long arg = 4;
     // starts time couting
     double start_time = omp_get_wtime();
     // original graph file
-    const char* arq = "dblp.txt";
+    const char* arq = "graph.txt";
     // mst file
     const char* arq2 = "mst.txt";
 
@@ -66,7 +67,7 @@ int main(int argc, char** argv)
     omp_set_num_threads(4);
     #pragma omp parallel
     {
-        #pragma omp single
+            #pragma omp single
         partitioning(graph, big, upper_lim, low_lim, arq, 1, arg);
     }
 
