@@ -5,6 +5,6 @@ This is a new parallel partitioning algorithm with a focus on assisting in commu
 
 Presentation Link: https://youtu.be/o234YyG6xf0
 
-Link DBLP database, used for analysis: https://drive.google.com/open?id=1JzwoY3sHyE5sFma7vAgxORYTU8faInWU
+DBLP database link, used for the analysis: https://drive.google.com/open?id=1JzwoY3sHyE5sFma7vAgxORYTU8faInWU
 
-Link of instances: https://github.com/Talessil/Instances
+Instances: https://github.com/Talessil/Instances
