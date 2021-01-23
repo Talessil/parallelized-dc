@@ -13,7 +13,7 @@ The Digital Bibliography& Library Project (DBLP) database was modeled as a scien
 * DBLP database instance: https://drive.google.com/open?id=1JzwoY3sHyE5sFma7vAgxORYTU8faInWU
 * Smaller instances: ttps://github.com/Talessil/Instances
 
-##Published Work
+## Published Work
 This work was published in the **25th IEEE Symposium on Computers and Communications (ISCC)**.
 * Youtube presentation link: https://youtu.be/o234YyG6xf0
 * Article link: https://ieeexplore.ieee.org/abstract/document/9219602
