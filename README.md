@@ -17,3 +17,6 @@ The Digital Bibliography& Library Project (DBLP) database was modeled as a scien
 This work was published in the **25th IEEE Symposium on Computers and Communications (ISCC)**.
 * Youtube presentation link: https://youtu.be/o234YyG6xf0
 * Article link: https://ieeexplore.ieee.org/abstract/document/9219602
+
+## Open Challenges
+The partitioning method is working and well commented. However, since the main goal is to speed up the clustering process, we've been working on the parallelism process followed by the merge implementation.
