@@ -8,15 +8,16 @@ The need to detect communities in social networks has always been challenging, e
 * The partitioning process keeps the partition's connectivity.
 * The algorithm strategy also allows for the overlapping of nodes between partitions. 
 
-## Database
-The Digital Bibliography& Library Project (DBLP) database was modeled as a scientific citation network used to support the analysis and experiments.
-* DBLP database instance: https://drive.google.com/open?id=1JzwoY3sHyE5sFma7vAgxORYTU8faInWU
-* Smaller instances: ttps://github.com/Talessil/Instances
-
 ## Published Work
 This work was published in the **25th IEEE Symposium on Computers and Communications (ISCC)**.
 * Youtube presentation link: https://youtu.be/o234YyG6xf0
 * Article link: https://ieeexplore.ieee.org/abstract/document/9219602
 
+## Database
+The Digital Bibliography& Library Project (DBLP) database was modeled as a scientific citation network used to support the analysis and experiments.
+* DBLP database instance: https://drive.google.com/open?id=1JzwoY3sHyE5sFma7vAgxORYTU8faInWU
+* Smaller instances: ttps://github.com/Talessil/Instances
+
 ## Open Challenges
 The partitioning method is working and well commented. However, since the main goal is to speed up the clustering process, we've been working on the parallelism process followed by the merge implementation.
+
